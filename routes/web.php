@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\OrderCRUDController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -72,15 +73,34 @@ Route::middleware('auth')->group(function () {
     //for crud sa comments
 
 
+    // Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
+    // Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+    // Route::get('/reviews/{id}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
+    // Route::put('/reviews/{review}', 'ReviewController@update')->name('reviews.update');
+
+    // Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
+
     Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
-    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
-    Route::get('/reviews/{id}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
-    Route::put('/reviews/{review}', 'ReviewController@update')->name('reviews.update');
+Route::get('/reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+Route::get('/reviews/{review}', [ReviewController::class, 'show'])->name('reviews.show');
+Route::get('/reviews/{review}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
 
-    Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
+Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 
 
 
+
+
+// admin crud
+Route::get('/orders', [OrderCRUDController::class, 'index'])->name('orderManagement.index');
+Route::get('/orders/create', [OrderCRUDController::class, 'create'])->name('orderManagement.create');
+Route::post('/orders', [OrderCRUDController::class, 'store'])->name('orderManagement.store');
+Route::get('/orders/{order}/edit', [OrderCRUDController::class, 'edit'])->name('orderManagement.edit');
+Route::put('/orders/{order}', [OrderCRUDController::class, 'update'])->name('orderManagement.update');
+Route::delete('/orders/{order}', [OrderCRUDController::class, 'destroy'])->name('orderManagement.destroy');
 
 
     

@@ -3,63 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD Operations</title>
+    <title>Orders Management</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
     <div class="container mt-5">
-        <h2 class="mb-4">CRUD Operations for Reviews</h2>
+        <h2>Orders Management</h2>
+        <a href="{{ route('orderManagement.create') }}" class="btn btn-primary mb-3"><i class="bi bi-plus"></i> Create New Order</a>
 
-       <form id="createReviewForm" action="{{ route('reviews.store') }}" method="POST" enctype="multipart/form-data">
-    @csrf
-    <div class="form-row">
-        <div class="form-group col-md-4">
-            <label for="commentername">Commenter Name:</label>
-            <input type="text" id="commentername" name="commentername" class="form-control">
-        </div>
-        <div class="form-group col-md-4">
-            <label for="comments">Comments:</label>
-            <textarea id="comments" name="comments" class="form-control"></textarea>
-        </div>
-        <div class="form-group col-md-4">
-            <label for="reviewphoto">Review Photo:</label>
-            <input type="file" id="reviewphoto" name="reviewphoto" class="form-control-file">
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit Review</button>
-</form>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
-
-        <!-- DataTable to display existing reviews -->
-        <h3>List of Reviews</h3>
-        <table id="reviewsTable" class="table table-striped table-bordered" style="width:100%">
+        <table id="ordersTable" class="table">
             <thead>
                 <tr>
-                    <th>Commenter Name</th>
-                    <th>Comments</th>
-                    <th>Review Photo</th>
+                    <th>ID</th>
+                    <th>Product ID</th>
+                    <th>User ID</th>
+                    <th>Order Status</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                    <th>Shipping Address</th>
+                    <th>Email</th>
+                    <th>Mode of Payment</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($reviews as $review)
+                @foreach ($orders as $order)
                     <tr>
-                        <td>{{ $review->commentername }}</td>
-                        <td>{{ $review->comments }}</td>
-                        <td>
-                            @if ($review->reviewphoto)
-                                <img src="{{ asset('storage/' . $review->reviewphoto) }}" alt="Review Photo" style="max-width: 150px;">
-                            @else
-                                No Photo Available
-                            @endif
-                        </td>
-                        <td>
-                            <!-- Edit button -->
-                            <form action="{{ route('reviews.edit', $review) }}" method="GET">
+                        <td>{{ $order->id }}</td>
+                        <td>{{ $order->productID }}</td>
+                        <td>{{ $order->userID }}</td>
+                        <td>{{ $order->orderStatus }}</td>
+                        <td>{{ $order->quantity }}</td>
+                        <td>{{ $order->total }}</td>
+                        <td>{{ $order->created_at }}</td>
+                        <td>{{ $order->updated_at }}</td>
+                        <td>{{ $order->shippingAddress }}</td>
+                        <td>{{ $order->email }}</td>
+                        <td>{{ $order->modeOfPayment }}</td>
+                       <!-- Edit button -->
+                       <td>
+                       <form action="{{ route('orderManagement.edit', $order->id) }}" method="GET">
                                 @csrf
                                 <button type="submit" class="btn btn-link">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -72,7 +69,7 @@
                         </td>
                         <td>
                             <!-- Delete button -->
-                            <form method="post" action="{{ route('reviews.destroy', ['review' => $review]) }}">
+                            <form method="post" action="{{ route('orderManagement.destroy', $order->id) }}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-link">
@@ -83,7 +80,6 @@
                                     DELETE
                                 </button>
                             </form>
-                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -100,8 +96,7 @@
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Initialize DataTable
-            $('#reviewsTable').DataTable();
+            $('#ordersTable').DataTable();
         });
     </script>
 </body>

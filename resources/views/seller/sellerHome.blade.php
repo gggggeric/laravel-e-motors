@@ -41,21 +41,17 @@
             // Fetch data from the backend to populate the chart
             var totalUsersBought = {{ $totalUsersBought ?? 0 }};
             
-            // Create a pie chart
-            var ctx = document.getElementById('userPieChart').getContext('2d');
+            // Create a line chart
+            var ctx = document.getElementById('userLineChart').getContext('2d');
             var myChart = new Chart(ctx, {
-                type: 'pie',
+                type: 'line',
                 data: {
                     labels: ['Users Who Bought'],
                     datasets: [{
                         label: 'Total Users',
                         data: [totalUsersBought],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)'
-                        ],
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
                         borderWidth: 1
                     }]
                 },
@@ -66,11 +62,11 @@
         });
     </script>
     
-    <!-- Placeholder for the pie chart -->
+    <!-- Placeholder for the line chart -->
     <div class="mt-6 flex justify-center">
-        <div class="bg-white rounded-lg shadow-md p-4" style="max-width: 300px;">
+        <div class="bg-white rounded-lg shadow-md p-4" style="width: 100%; max-width: 800px;">
             <h3 class="text-lg font-semibold text-gray-800 mb-2">Total Users Who Bought Your Products</h3>
-            <canvas id="userPieChart" width="300" height="300"></canvas>
+            <canvas id="userLineChart" width="800" height="400"></canvas>
         </div>
     </div>
 </x-app-layout>
